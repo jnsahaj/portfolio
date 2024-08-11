@@ -1,0 +1,16 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Age from "../components/Age";
+import { Page } from "../constants";
+
+const links = [
+    { label: "Github", href: "https://github.com/jnsahaj" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/sahaj-jain-9099641ab/" },
+];
+---
+
+<Layout activeKey={Page.PROJECTS}>
+    <main class="mt-16">
+        <h2 class="text-lg">Projects</h2>
+    </main>
+</Layout>

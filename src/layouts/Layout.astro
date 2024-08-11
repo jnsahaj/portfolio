@@ -1,9 +1,12 @@
 ---
 interface Props {
-    title: string;
+    activeKey: Page;
 }
 
-const { title } = Astro.props;
+import { Page } from "../constants";
+const { activeKey } = Astro.props;
+
+import Header from "../components/Header";
 ---
 
 <!doctype html>
@@ -13,10 +16,18 @@ const { title } = Astro.props;
         <meta name="description" content="Astro description" />
         <meta name="viewport" content="width=device-width" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+            rel="stylesheet"
+        />
         <meta name="generator" content={Astro.generator} />
-        <title>{title}</title>
     </head>
-    <body>
+    <body class="mx-auto max-w-xl">
+        <Header activeKey={activeKey} />
         <slot />
     </body>
 </html>
@@ -28,8 +39,12 @@ const { title } = Astro.props;
         --accent-gradient: linear-gradient(45deg, rgb(var(--accent)), rgb(var(--accent-light)) 30%, white 60%);
     }
     html {
-        font-family: system-ui, sans-serif;
-        background: #13151a;
+        font-family: "IBM Plex Sans", sans-serif;
+        font-style: normal;
+    }
+    body {
+        color: white;
+        background: #111010;
     }
     code {
         font-family:
