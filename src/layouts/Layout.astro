@@ -1,14 +1,3 @@
----
-interface Props {
-    activeKey: Page;
-}
-
-import { Page } from "../constants";
-const { activeKey } = Astro.props;
-
-import Header from "../components/Header";
----
-
 <!doctype html>
 <html lang="en">
     <head>
@@ -26,7 +15,7 @@ import Header from "../components/Header";
         />
         <meta name="generator" content={Astro.generator} />
     </head>
-    <body class="mx-auto max-w-lg">
+    <body class="mx-auto max-w-lg mb-64 px-6">
         <slot />
     </body>
 </html>
