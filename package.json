@@ -16,6 +16,7 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "astro": "^4.13.3",
+    "astro-icon": "^1.1.1",
     "clsx": "^2.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -23,6 +24,7 @@
     "typescript": "^5.5.4"
   },
   "devDependencies": {
+    "@iconify-json/octicon": "^1.1.57",
     "prettier": "^3.3.3",
     "prettier-plugin-astro": "^0.14.1"
   }

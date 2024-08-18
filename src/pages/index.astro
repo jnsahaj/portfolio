@@ -1,7 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Age from "../components/Age";
 import { Page } from "../constants";
+import { Icon } from "astro-icon/components";
 
 const links = [
     { label: "Github", href: "https://github.com/jnsahaj" },
@@ -11,16 +11,35 @@ const links = [
 ---
 
 <Layout activeKey={Page.ABOUT}>
-    <main class="mt-16">
-        <h2 class="text-lg">Hey there, I'm Sahaj 👋</h2>
-        <section class="mt-8 text-sm text-gray-200">
-            <p>
-                I'm a <Age client:load /> software engineer building stuff for the web.
+    <main class="mt-16 text-sm text-gray-300">
+        <h2 class="text-3xl text-white font-bold">Sahaj Jain</h2>
+        <section class="mt-8">
+            <p>Hey, I’m Sahaj—a software engineer building refined experiences on the web.</p>
+            <br />
+        </section>
+
+        <section class="text-xs text-gray-400">
+            <p class="flex mb-1 gap-2 items-center italic">
+                <Icon name="octicon:location-16" />
+                Haryana, India
             </p>
+            <p class="flex mb-1 gap-2 items-center italic">
+                <Icon name="octicon:briefcase-16" />
+                SDE at<a
+                    class="underline underline-offset-1 decoration-gray-600 hover:decoration-current transition"
+                    href="https://myhq.in">myHQ</a
+                >
+            </p>
+            <p class="flex mb-1 gap-2 items-center italic">
+                <Icon name="octicon:book-16" />
+                B.E. (Hons.) from BITS Pilani, Goa Campus
+            </p>
+        </section>
+        <section>
             <br />
             <p>
-                I'm currently working at myHQ, a leading platform for booking coworking spaces across India, as a
-                frontend developer.
+                I am interested in all things software, because it is so accessible. I primarily work on the web, and
+                occassionaly some low-level systems stuff. I use neovim <i>(btw)</i>
             </p>
         </section>
         <section class="flex text-xs gap-6 justify-center mt-24 text-gray-100 decoration-gray-400 font-thin">
