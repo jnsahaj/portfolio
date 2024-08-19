@@ -9,7 +9,7 @@ const links = [
 ];
 ---
 
-<Layout>
+<Layout title="Sahaj Jain">
     <main class="mt-16 text-sm text-gray-300">
         <h2 class="text-3xl text-white font-bold">Sahaj Jain</h2>
         <section class="mt-8">
@@ -42,7 +42,7 @@ const links = [
             </p>
         </section>
 
-        <h5 class="text-gray-500 text-xs mt-16">Featured Projects</h5>
+        <div class="text-gray-400 text-xs mt-16">Featured Projects</div>
         <section class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-2 gap-x-10">
             <a href="https://github.com/jnsahaj/monkey-rs" class="flex flex-col gap-2 b py-4 rounded group">
                 <div
@@ -50,10 +50,9 @@ const links = [
                 >
                     monkey-rs
                 </div>
-                <p class="text-xs text-gray-500">
+                <p class="text-xs text-gray-400">
                     An interpreter and [WIP] compiler for a fully-featured fictional language, written in Rust
                 </p>
-                <p class="text-xs text-gray-500">Inspired by "Writing an Interpreter in Go"</p>
             </a>
             <a href="https://altr.iamsahaj.xyz" class="md:row-span-2 flex flex-col gap-2 group py-4 rounded">
                 <div
@@ -61,16 +60,9 @@ const links = [
                 >
                     altr
                 </div>
-                <p class="text-xs text-gray-500">
-                    Smart refactoring tool that helps you effortlessly rename variables, functions, and other code
-                    elements while maintaining your preferred casing conventions
-                </p>
-                <p class="text-xs text-gray-500">
-                    Uses WASM to interface the UI written in React with the Rust layer, which performs the actual
-                    operations.
-                </p>
-                <p class="text-xs text-gray-500">
-                    This tool is also available as a CLI tool and as a standalone Rust crate
+                <p class="text-xs text-gray-400">
+                    Smart refactoring tool that helps in effortlessly renaming code elements while maintaining your
+                    preferred casing conventions
                 </p>
             </a>
             <a href="https://github.com/jnsahaj/rate-limiter-lab" class="flex flex-col gap-2 group py-4 rounded">
@@ -79,10 +71,7 @@ const links = [
                 >
                     rate-limiter-lab
                 </div>
-                <p class="text-xs text-gray-500">An interactive demo to analyse different rate limiter algorithms</p>
-                <p class="text-xs text-gray-500">
-                    Uses docker to setup Redis that serves as the in-memory DB to check if a request should be blocked
-                </p>
+                <p class="text-xs text-gray-400">An interactive demo to analyse different rate limiter algorithms</p>
             </a>
         </section>
         <section class="flex text-xs gap-6 justify-center mt-24 text-gray-100 decoration-gray-400 font-thin">
