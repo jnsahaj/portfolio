@@ -1,4 +1,5 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
 
@@ -7,25 +8,30 @@ const links = [
     { label: "LinkedIn", href: "https://www.linkedin.com/in/sahaj-jain-9099641ab/" },
     { label: "Email", href: "mailto://sahajjain13+business@gmail.com" },
 ];
+
+const blogEntries = await getCollection("blog");
+const availableBlogEntries = blogEntries.filter((entry) => {
+    return import.meta.env.PROD ? !entry.data?.draft : true;
+});
 ---
 
 <Layout title="Sahaj Jain">
-    <main class="mt-16 text-sm text-gray-300">
+    <main class="mt-16 text-sm text-zinc-300">
         <h2 class="text-3xl text-white font-bold">Sahaj Jain</h2>
         <section class="mt-8">
             <p>Hey, I’m Sahaj—a software engineer building refined experiences on the web.</p>
             <br />
         </section>
 
-        <section class="text-xs text-gray-400">
+        <section class="text-xs text-zinc-400">
             <p class="flex mb-1 gap-2 items-center italic">
                 <Icon name="octicon:location-16" />
-                Haryana, India
+                Gurugram, India
             </p>
             <p class="flex mb-1 gap-2 items-center italic">
                 <Icon name="octicon:briefcase-16" />
                 SDE at<a
-                    class="underline underline-offset-1 decoration-gray-600 hover:decoration-current transition"
+                    class="underline underline-offset-1 decoration-zinc-600 hover:decoration-current transition"
                     href="https://myhq.in">myHQ</a
                 >
             </p>
@@ -37,44 +43,75 @@ const links = [
         <section>
             <br />
             <p>
-                I am interested in all things software, because it is so accessible. I primarily work on the web, and
-                occassionaly some low-level systems stuff. I use neovim <i>(btw)</i>
+                My focus at the moment is on web development, though I also occasionally explore low-level systems
+                programming. I use neovim <i>(btw)</i>
             </p>
         </section>
 
-        <div class="text-gray-400 text-xs mt-16">Featured Projects</div>
-        <section class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-2 gap-x-10">
+        <div class="text-zinc-400 text-xs mt-12">Projects</div>
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-2 gap-x-10">
             <a href="https://github.com/jnsahaj/monkey-rs" class="flex flex-col gap-2 b py-4 rounded group">
                 <div
-                    class="text-lg flex items-center gap-1 underline group-hover:decoration-current italic underline-offset-2 decoration-gray-600 transition"
+                    class="text-lg flex items-center gap-1 underline group-hover:decoration-current italic underline-offset-2 decoration-zinc-600 transition"
                 >
                     monkey-rs
                 </div>
-                <p class="text-xs text-gray-400">
+                <p class="text-xs text-zinc-400">
                     An interpreter and [WIP] compiler for a fully-featured fictional language, written in Rust
                 </p>
             </a>
             <a href="https://altr.iamsahaj.xyz" class="md:row-span-2 flex flex-col gap-2 group py-4 rounded">
                 <div
-                    class="text-lg flex items-center gap-1 underline group-hover:decoration-current italic underline-offset-2 decoration-gray-600 transition"
+                    class="text-lg flex items-center gap-1 underline group-hover:decoration-current italic underline-offset-2 decoration-zinc-600 transition"
                 >
                     altr
                 </div>
-                <p class="text-xs text-gray-400">
+                <p class="text-xs text-zinc-400">
                     Smart refactoring tool that helps in effortlessly renaming code elements while maintaining your
                     preferred casing conventions
                 </p>
             </a>
             <a href="https://github.com/jnsahaj/rate-limiter-lab" class="flex flex-col gap-2 group py-4 rounded">
                 <div
-                    class="text-lg flex items-center gap-1 underline group-hover:decoration-current italic underline-offset-2 decoration-gray-600 transition"
+                    class="text-lg flex items-center gap-1 underline group-hover:decoration-current italic underline-offset-2 decoration-zinc-600 transition"
                 >
                     rate-limiter-lab
                 </div>
-                <p class="text-xs text-gray-400">An interactive demo to analyse different rate limiter algorithms</p>
+                <p class="text-xs text-zinc-400">An interactive demo to analyse different rate limiter algorithms</p>
             </a>
         </section>
-        <section class="flex text-xs gap-6 justify-center mt-24 text-gray-100 decoration-gray-400 font-thin">
+
+        <div class="text-zinc-400 text-xs mt-12">Blog</div>
+        <section class="mt-2 flex flex-col gap-2">
+            {
+                availableBlogEntries.map((entry) => {
+                    return (
+                        <a
+                            class="pb-2 px-4 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 transition rounded relative"
+                            href={`/blog/${entry.slug}`}
+                        >
+                            <div class="mt-2 flex justify-between items-start gap-4">
+                                <div>{entry.data.title}</div>
+                                <Icon class="text-lg" name="octicon:arrow-up-right-16" />
+                            </div>
+
+                            <time
+                                class="text-xs text-zinc-600 absolute top-0 -right-24 md:block hidden"
+                                datetime={entry.data.publishDate}
+                            >
+                                {new Date(entry.data.publishDate).toLocaleDateString("en-US", {
+                                    year: "numeric",
+                                    month: "short",
+                                    day: "numeric",
+                                })}
+                            </time>
+                        </a>
+                    );
+                })
+            }
+        </section>
+
+        <section class="flex text-xs gap-6 justify-center mt-24 text-zinc-100 decoration-zinc-400 font-thin">
             {
                 links.map((link) => (
                     <a class="hover:underline underline-offset-4" href={link.href}>

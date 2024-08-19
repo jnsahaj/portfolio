@@ -1,0 +1,61 @@
+---
+title: "Mastering Productivity: Essential Tools for an Optimized Workflow"
+description: "Tools that I've been using daily that I couldn't do without"
+publishDate: "2024-08-19"
+draft: true
+---
+
+My pursuit of a perfectly optimized workflow has led me to these indispensable tools. Here's what works best for me:
+
+## Neovim
+
+[Neovim](https://neovim.io/) is my primary code editor, offering speed, simplicity, and infinite customization. It does have a steep learning curve, but you can gradually start with Vim motions in your own editor which provide most of the value of neovim anyway. <br />
+If you are just starting out, then I would highly recommend using [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim)
+
+**What I love ❣️**
+
+-   using `hjkl` to move around instead of arrow keys
+-   motions like: `di{` (delete content inside \{_..._\}) , `V5jy` (copy 5 lines down)
+-   rich plugins ecosystem: example telescope.nvim for fuzzy search across my project
+-   macros
+-   brings you closer to the terminal, which has far reaching benefits
+
+## Tmux
+
+[Tmux](https://github.com/tmux/tmux/wiki) enables me to manage multiple terminal sessions effortlessly. I can split terminals into panes, allowing simultaneous task execution—be it running servers, editing files, or monitoring logs. Its session persistence ensures I can pick up exactly where I left off, streamlining task management across projects.
+
+**What I love ❣️**
+
+-   starting a session on any of the listed directories using fuzzy search - enabled by fzf
+
+## Lazygit
+
+[Lazygit](https://github.com/jesseduffield/lazygit) offers a rich TUI for Git workflows. It pairs super well with neovim and tmux, offering keyboard shortcuts for almost all your git needs. I have it setup in neovim such that `<leader>gg` pops up a tmux window with lazygit running.
+
+**What I love ❣️**
+
+-   opening a PR using `"o"`
+-   inspecting diff from the file tree, and partial staging
+
+## Window Manager
+
+A tiling window manager is vital for maintaining an organized workspace, and switch between applications without losing focus. **Hot take - a single monitor setup with proper window management is more efficient than a multi-monitor setup**.<br />
+The reason for that is you can only focus (think: mouse-focus) on one window at a time. The only exception is when the second screen is purely visual
+
+I use [yabai](https://github.com/koekeishiya/yabai) as I'm on macOS. [i3](https://i3wm.org/) is fantastic for Linux
+
+**What I love ❣️**
+
+-   using `alt-1`, `alt-2` etc. to switch between windows
+-   fixing the application on a single window number. So my browser will always be open on `alt-1`, my editor on `alt-2` etc. removing any potential overhead when navigating
+
+## Arc Browser
+
+The people working at [Arc](https://arc.net/) have nailed the polished browser experience. It never gets in your way, while providing a seamless browsing experience.
+
+**What I love ❣️**
+
+-   the horizontal tabs - I was skeptical at first but now I can't go back
+-   ability to customise keybindings
+-   workspace switching wihtout opening a new window on your system
+-   saving split-tab groups
