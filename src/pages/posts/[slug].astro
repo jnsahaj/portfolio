@@ -1,0 +1,23 @@
+---
+import { getCollection } from "astro:content";
+import BlogPostLayout from "../../layouts/BlogPostLayout.astro";
+
+export async function getStaticPaths() {
+    const blogEntries = await getCollection("blog");
+    return blogEntries.map((entry) => ({
+        params: { slug: entry.slug },
+        props: { entry },
+    }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<BlogPostLayout post={entry}>
+    <article
+        class="mt-16 prose-invert prose-sm prose-p:text-gray-400 prose-li:text-gray-400 prose-ol:list-disc prose-ul:list-disc prose-strong:text-white prose-strong:font-normal prose-headings:font-bold prose-code:text-white prose-a:underline prose-a:underline-offset-2 prose-a:text-white prose-ol:my-1 prose-ul:my-1 prose-a:decoration-gray-400 hover:prose-a:decoration-current"
+    >
+        <Content />
+    </article>
+</BlogPostLayout>
