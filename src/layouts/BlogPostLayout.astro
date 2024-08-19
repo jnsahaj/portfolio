@@ -1,4 +1,5 @@
 ---
+import { Icon } from "astro-icon/components";
 import Layout from "./Layout.astro";
 import type { CollectionEntry } from "astro:content";
 
@@ -18,8 +19,12 @@ const formatDate = (date: string) =>
 
 <Layout title={post.data.title}>
     <header class="mt-16">
-        <h1 class="text-3xl font-bold">{post.data.title}</h1>
-        <div class="text-gray-400 text-xs mt-2">{formatDate(post.data.publishDate)}</div>
+        <a class="mt-8 flex items-center gap-1 text-sm text-zinc-400 hover:text-white" href="/">
+            <Icon name="octicon:arrow-left-16" />
+            <span>home</span></a
+        >
+        <h1 class="mt-8 text-3xl font-bold">{post.data.title}</h1>
+        <div class="text-zinc-400 text-xs mt-2">{formatDate(post.data.publishDate)}</div>
     </header>
 
     <slot />
