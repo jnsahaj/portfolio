@@ -10,7 +10,7 @@ export async function GET(context) {
     });
 
     return rss({
-        site: context.url.origin,
+        site: context.site,
         title: "iamsahaj.xyz",
         description: "iamsahaj.xyz",
         items: blog.map((post) => ({
