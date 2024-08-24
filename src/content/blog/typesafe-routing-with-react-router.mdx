@@ -7,7 +7,7 @@ publishDate: "2024-08-25"
 import { Image } from "astro:assets";
 import pathParamTypeDiagram from "../../assets/path-param-type-diagram.png";
 
-_TLDR; Use [generatePath](https://reactrouter.com/en/main/utils/generate-path) from `"react-router-dom"` to build URLs with type-safety. Also here is the link to [TypeScript Playground](https://www.typescriptlang.org/play/?#code/C4TwDgpgBACghsAFvATnAtgHnkqEAewEAdgCYDOU5wKAlsQOYB8UAvLAonoSRVAAYASAN70AZhBRQAMgF8A9CPGSoAJVn8AUFB1QA-BySoMmaSwA+h5HDRZVTbboBcV7kTKV+TpcQlTj6BqOuvoctsHOUMQQAG6SANyamqCQYRjk2JxuvJTUdIws7MJQANoA1hAgUPRWAZlITAC6ei559AxQsony8mnoGQBEcANQlgMARgOFUMVwLVQ07QA0UOPzbYydSWIArsQAxsC0APbEqzu0ADakOIjY2R4L+cwAFGCcLjAr77bk8wEZGBMACUrUWm2EERQEGAOxQZ3eSAAdNCwJc4PsIC95E4XiUAHoAHXkjQA1MD5AwVi8APorCogYFsFiQkIhWhiKBvGzpPRI8qVRpsVjsPakCBiegQUhM1ls+VIFDHADuUQgqoAoiglSgXvwALK0cjkdpQH4YGGSFwiBkaYGJeU6WQRELQ2Hws08-p8gVVOCUGCNB26WT2zTOzT7U7kY6XCBIy7HBgvcYXa63F4DeQ7ciScg4nOSACSpAGK2KhZQJZcAHIAIw1zrAsNR4gxuMJpMptM3TiZ7O5lD5pyVkvyMDHajDifUEtlmZQUekWsN76T4DVqA1gBMjdDLejsfjieTqauvaQ-crw6X8+KtGXW4bTftQA)_
+_TLDR; Use [generatePath](https://reactrouter.com/en/main/utils/generate-path) from `"react-router-dom"` to build URLs with type-safety. Link to [TypeScript Playground](https://www.typescriptlang.org/play/?#code/C4TwDgpgBACghsAFvATnAtgHnkqEAewEAdgCYDOU5wKAlsQOYB8UAvLAonoSRVAAYASAN70AZhBRQAMgF8A9CPGSoAJVn8AUFB1QA-BySoMmaSwA+h5HDRZVTbboBcV7kTKV+TpcQlTj6BqOuvoctsHOUMQQAG6SANyamqCQYRjk2JxuvJTUdIws7MJQANoA1hAgUPRWAZlITAC6ei559AxQsony8mnoGQBEcANQlgMARgOFUMVwLVQ07QA0UOPzbYydSWIArsQAxsC0APbEqzu0ADakOIjY2R4L+cwAFGCcLjAr77bk8wEZGBMACUrUWm2EERQEGAOxQZ3eSAAdNCwJc4PsIC95E4XiUAHoAHXkjQA1MD5AwVi8APorCogYFsFiQkIhWhiKBvGzpPRI8qVRpsVjsPakCBiegQUhM1ls+VIFDHADuUQgqoAoiglSgXvwALK0cjkdpQH4YGGSFwiBkaYGJeU6WQRELQ2Hws08-p8gVVOCUGCNB26WT2zTOzT7U7kY6XCBIy7HBgvcYXa63F4DeQ7ciScg4nOSACSpAGK2KhZQJZcAHIAIw1zrAsNR4gxuMJpMptM3TiZ7O5lD5pyVkvyMDHajDifUEtlmZQUekWsN76T4DVqA1gBMjdDLejsfjieTqauvaQ-crw6X8+KtGXW4bTftQA)_
 
 We use URLs in our code 1) to define routes and 2) to redirect to them. If we only had URLs without any dynamic parameters, then we could, in-theory, just store them as constants.
 
@@ -24,7 +24,7 @@ export const Routes = {
 } as const;
 
 // Utility type
-export type Routes = (typeof ROUTES)[keyof typeof ROUTES]; // "/users" | "/users/:userId"
+export type Routes = (typeof Routes)[keyof typeof Routes]; // "/users" | "/users/:userId"
 ```
 
 `Routes` will hold the route definitions, which we can directly use in the `<Route />` component. We will be using it later as types to our function's argument.
