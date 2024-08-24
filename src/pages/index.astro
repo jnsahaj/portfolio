@@ -13,6 +13,10 @@ const blogEntries = await getCollection("blog");
 const availableBlogEntries = blogEntries.filter((entry) => {
     return import.meta.env.PROD ? !entry.data?.draft : true;
 });
+
+availableBlogEntries.sort((a, b) =>
+    a.data.publishDate < b.data.publishDate ? 1 : a.data.publishDate > b.data.publishDate ? -1 : 0,
+);
 ---
 
 <Layout title="Sahaj Jain">
@@ -48,6 +52,36 @@ const availableBlogEntries = blogEntries.filter((entry) => {
             </p>
         </section>
 
+        <div class="text-zinc-400 text-xs mt-12">Blog</div>
+        <section class="mt-2 flex flex-col gap-2">
+            {
+                availableBlogEntries.map((entry) => {
+                    return (
+                        <a
+                            class="pb-2 px-4 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 transition rounded relative"
+                            href={`/blog/${entry.slug}`}
+                        >
+                            <div class="mt-2 flex justify-between items-start gap-4">
+                                <div>{entry.data.title}</div>
+                                <Icon class="text-lg" name="octicon:arrow-up-right-16" />
+                            </div>
+
+                            <time
+                                class="text-xs text-zinc-600 absolute top-0 -right-24 md:block hidden"
+                                datetime={entry.data.publishDate}
+                            >
+                                {new Date(entry.data.publishDate).toLocaleDateString("en-US", {
+                                    year: "numeric",
+                                    month: "short",
+                                    day: "numeric",
+                                })}
+                            </time>
+                        </a>
+                    );
+                })
+            }
+        </section>
+
         <div class="text-zinc-400 text-xs mt-12">Projects</div>
         <section class="grid grid-cols-1 md:grid-cols-2 gap-2 gap-x-10">
             <a href="https://github.com/jnsahaj/monkey-rs" class="flex flex-col gap-2 b py-4 rounded group">
@@ -79,36 +113,6 @@ const availableBlogEntries = blogEntries.filter((entry) => {
                 </div>
                 <p class="text-xs text-zinc-400">An interactive demo to analyse different rate limiter algorithms</p>
             </a>
-        </section>
-
-        <div class="text-zinc-400 text-xs mt-12">Blog</div>
-        <section class="mt-2 flex flex-col gap-2">
-            {
-                availableBlogEntries.map((entry) => {
-                    return (
-                        <a
-                            class="pb-2 px-4 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 transition rounded relative"
-                            href={`/blog/${entry.slug}`}
-                        >
-                            <div class="mt-2 flex justify-between items-start gap-4">
-                                <div>{entry.data.title}</div>
-                                <Icon class="text-lg" name="octicon:arrow-up-right-16" />
-                            </div>
-
-                            <time
-                                class="text-xs text-zinc-600 absolute top-0 -right-24 md:block hidden"
-                                datetime={entry.data.publishDate}
-                            >
-                                {new Date(entry.data.publishDate).toLocaleDateString("en-US", {
-                                    year: "numeric",
-                                    month: "short",
-                                    day: "numeric",
-                                })}
-                            </time>
-                        </a>
-                    );
-                })
-            }
         </section>
 
         <section class="flex text-xs gap-6 justify-center mt-24 text-zinc-100 decoration-zinc-400 font-thin">
