@@ -1,0 +1,83 @@
+---
+title: "Type-safe Routing with React-Router: A TypeScript Deep Dive"
+description: "Exploring the generatePath function from react-router-dom"
+publishDate: "2024-08-24"
+draft: true
+---
+
+There are 2 places where we use URLs in our code 1) when defining routes and 2) when redirecting to them. If we consider URLs without any dynamic parameters, then we could, in-theory, just store them as constants.<br /> <br />
+The route definition (ex: `/users/:userId`) is not dynamic, and therefore is a good candidate to be stored as a
+constant. When redirecting, we just need to build the redirect URL from the definition by replacing the parameters with provided values, in a type-safe way. In short, we need to go from `/users/:userId` to `/users/1`
+
+## Solution Preview
+
+Before moving further, let's get a sense of how our solution will look like. <br />
+
+```ts
+// src/constants.ts
+export const Routes = {
+    USERS: "/users",
+    USER_DETAILS: "/users/:userId",
+} as const;
+
+// Utility type
+export type Routes = (typeof ROUTES)[keyof typeof ROUTES]; // "/users" | "/users/:userId"
+```
+
+`Routes` here is just a better `enum`. It will hold the route definitions, which we can directly use in the `<Route>` component.
+
+Add Note component here
+Notice the use of `as const` here. The **constant assertion** is used to ensure that the object is narrowly inferred. This means that the `type ROUTES` will be equal to `"/users" | "/users/:userId"` instead of `string`
+
+<br />
+Next, we need the function that will help us go from `/users/:userId` to `/users/1`
+
+## Introducing `buildPath`
+
+Here's what `buildPath` looks like:
+
+```ts
+// function buildPath(path, params?);
+const url = buildPath("/users/:userId", { userId: "1" }); // Ok -> url = "/users/1"
+const url = buildPath("/users/:userId"); // TypeError: required { userId: string }
+const url = buildPath("/users/:userId", { id: "1" }); // TypeError: expected { userId: string }
+const url = buildPath("/users"); // Ok -> url = "/users"
+```
+
+For now, we will ignore the type-safe aspect of this function and just look at the implementation.
+
+```ts
+function buildPath(path: string, params?: Record<string, string>) {
+    return path.replace(/:([a-zA-Z]+)/g, (_, key) => {
+        if (params[key] === undefined) {
+            throw new Error(`Missing parameter: ${key}`);
+        }
+        return params[key];
+    });
+}
+```
+
+The function looks for the `:<key>` pattern and replaces it with `params[key]` (if found)
+
+## Sprinkling TypeScript Magic ✨
+
+This is where things get fun. Essentially we need a type, that gives us the paramters as union of strings using pattern matching
+
+```md
+Examples:
+":a" -> "a"
+"/a/:b" -> "b"
+"/:a/:b" -> "a" | "b"
+```
+
+```ts
+type PathParam<Path extends string> = Path extends `${infer L}/${infer R}`
+    ? PathParam<L> | PathParam<R>
+    : Path extends `:${infer Param}`
+      ? Param extends `${infer Optional}?`
+          ? Optional
+          : Param
+      : never;
+```
+
+## The Good News
