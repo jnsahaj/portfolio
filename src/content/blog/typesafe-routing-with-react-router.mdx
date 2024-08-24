@@ -1,0 +1,152 @@
+---
+title: "Typesafe Routing with React-Router: Advanced TypeScript"
+description: "Exploring the generatePath function from react-router-dom"
+publishDate: "2024-08-25"
+---
+
+import { Image } from "astro:assets";
+import pathParamTypeDiagram from "../../assets/path-param-type-diagram.png";
+
+_TLDR; Use [generatePath](https://reactrouter.com/en/main/utils/generate-path) from `"react-router-dom"` to build URLs with type-safety. Also here is the link to [TypeScript Playground](https://www.typescriptlang.org/play/?#code/C4TwDgpgBACghsAFvATnAtgHnkqEAewEAdgCYDOU5wKAlsQOYB8UAvLAonoSRVAAYASAN70AZhBRQAMgF8A9CPGSoAJVn8AUFB1QA-BySoMmaSwA+h5HDRZVTbboBcV7kTKV+TpcQlTj6BqOuvoctsHOUMQQAG6SANyamqCQYRjk2JxuvJTUdIws7MJQANoA1hAgUPRWAZlITAC6ei559AxQsony8mnoGQBEcANQlgMARgOFUMVwLVQ07QA0UOPzbYydSWIArsQAxsC0APbEqzu0ADakOIjY2R4L+cwAFGCcLjAr77bk8wEZGBMACUrUWm2EERQEGAOxQZ3eSAAdNCwJc4PsIC95E4XiUAHoAHXkjQA1MD5AwVi8APorCogYFsFiQkIhWhiKBvGzpPRI8qVRpsVjsPakCBiegQUhM1ls+VIFDHADuUQgqoAoiglSgXvwALK0cjkdpQH4YGGSFwiBkaYGJeU6WQRELQ2Hws08-p8gVVOCUGCNB26WT2zTOzT7U7kY6XCBIy7HBgvcYXa63F4DeQ7ciScg4nOSACSpAGK2KhZQJZcAHIAIw1zrAsNR4gxuMJpMptM3TiZ7O5lD5pyVkvyMDHajDifUEtlmZQUekWsN76T4DVqA1gBMjdDLejsfjieTqauvaQ-crw6X8+KtGXW4bTftQA)_
+
+We use URLs in our code 1) to define routes and 2) to redirect to them. If we only had URLs without any dynamic parameters, then we could, in-theory, just store them as constants.
+
+The route definition (ex: `/users/:userId`) is not dynamic, and therefore can be stored as a
+constant. When redirecting, we just need to build the URL from the definition by replacing the parameters with provided values, in a type-safe way. In short, we need to go from `/users/:userId` to `/users/1`, while TypeScript holds our hand.
+
+## Defining Constants
+
+```ts
+// src/constants.ts
+export const Routes = {
+    USERS: "/users",
+    USER_DETAILS: "/users/:userId",
+} as const;
+
+// Utility type
+export type Routes = (typeof ROUTES)[keyof typeof ROUTES]; // "/users" | "/users/:userId"
+```
+
+`Routes` will hold the route definitions, which we can directly use in the `<Route />` component. We will be using it later as types to our function's argument.
+
+Notice the use of `as const` here. The **constant assertion** is used to ensure that the object is inferred "literally". This means that the `type Routes` will be equal to `"/users" | "/users/:userId"` instead of `string`. <br /> <br />
+Next, we need the function that will help us go from `/users/:userId` to `/users/1`.
+
+## Introducing `buildPath`
+
+Here's what `buildPath` does:
+
+```ts
+// function buildPath(path, params?);
+const url = buildPath("/users/:userId", { userId: "1" }); // Ok -> url = "/users/1"
+const url = buildPath("/users/:userId", { id: "1" }); // TypeError: expected { userId: string }
+const url = buildPath("/users"); // Ok -> url = "/users"
+```
+
+Ignoring the type-safe aspect of this function, below is one way to implement it.
+
+```ts
+function buildPath(path: string, params?: Record<string, string>) {
+    return path.replace(/:([^\/]+)/g, (_, key) => {
+        if (params[key] === undefined) {
+            throw new Error(`Missing parameter: ${key}`);
+        }
+        return params[key];
+    });
+}
+```
+
+It looks for the `:<key>` pattern and replaces it with `params[key]` (if found). This function checks for missing parameters at runtime. But we can do _better_.
+
+## Sprinkling TypeScript Magic ✨
+
+This is where we get to have fun. Essentially we need a type, that gives us the parameters as union of literals.
+
+Take a look at this - it's all we really need.
+
+```ts
+type PathParam<Path extends string> = Path extends `${infer L}/${infer R}`
+    ? PathParam<L> | PathParam<R>
+    : Path extends `:${infer Param}`
+      ? Param
+      : never;
+```
+
+```ts
+PathParam<"/a/:b"> = "b";
+PathParam<"/:a/:b"> = "a" | "b";
+PathParam<"/a"> = never;
+```
+
+Here's a diagram of how the `PathParam` type works. The result is a union of all the leaf nodes
+
+<Image src={pathParamTypeDiagram} alt="Diagram explaining working of PathParam type" />
+
+We are essentially performing a divide-and-conquer algorithm using pattern matching! <br />
+In case you are not familiar with `never`, `extends` or `infer` keywords, check out [this guide](https://blog.logrocket.com/understanding-infer-typescript/#no-value-never-type) for a brief summary or [Matt Pocock](https://www.youtube.com/@mattpocockuk) for amazing videos covering advanced TypeScript concepts.
+
+## Almost There
+
+Let's use `PathParam` with `buildPath` to achieve what we set out to do.
+
+```ts
+type Params<Path extends string> = { [key in PathParam<Path>]?: string };
+// Params<"/:a/:b"> = { a?: string, b?: string }
+
+function buildPath<P extends string>(path: P, params?: Params<P>): string {
+    return path.replace(/:([^\/]+)/g, (_, key) => {
+        if (params[key] === undefined) {
+            throw new Error(`Missing parameter: ${key}`);
+        }
+        return params[key];
+    });
+}
+```
+
+This works now! You can play with it on [TypeScript Playground](https://www.typescriptlang.org/play/?#code/C4TwDgpgBACghsAFvATnAtgHnkqEAewEAdgCYDOU5wKAlsQOYB8UAvLAonoSRVAAYASAN70AZhBRQAMgF8A9CPGSoAJVn8AUFB1QA-BySoMmaSwA+h5HDRZVTbboBcV7kTKV+TpcQlTj6BqOuvoctsHOUMQQAG6SANyamqCQYRjk2JxuvJTUdIws7MJQANoA1hAgUPRWAZlITAC6ei559AxQsony8mnoGQBEcANQlgMARgOFUMVwLVQ07QA0UOPzbYydSWIArsQAxsC0APbEqzu0ADakOIjY2R4L+cwAFGCcLjAr77bk8wEZGBMACUrUWm2EERQEGAOxQZ3eSAAdNCwJc4PsIC95E4XiUAHoAHXkjQA1MD5AwVi8APorCogYFsFiQkIhWhiKBvGzpPRI8qVRpsVjsPakCBiegQUhM1ls+VIFDHADuUQgqoAoiglSgXvwALK0cjkdpQH4YGGSFwiBkaYGJeU6WQRELQ2Hws08-p8gVVOCUGCNB26WT2zTOzT7U7kY6XCBIy7HBgvcYXa63F4DeQ7ciScg4nOSACSpAGK2KhZQJZcAHIAIw1zrAsNR4gxuMJpMptM3TiZ7O5lD5pyVkvyMDHajDifUEtlmZQUekWsN76T4DVqA1gBMjdDLejsfjieTqauvaQ-crw6X8+KtGXW4bTftQA)
+
+```ts
+const url = buildPath("/users/:id/:name", { id: "1", name: "sahaj" }); // Ok -> url = "/users/1/sahaj"
+const url = buildPath("/users/:userId", { id: "1" }); // TypeError: expected { userId: string }
+```
+
+This function is already good enough to be used as-is. Up until now whatever we did is **framework agnostic**. The
+following part is totally optional and is just one way of using this concept with React-Router.
+
+## Enter `"react-router-dom"`
+
+So here's the good news: all the hardwork we did above is already done by the [`generatePath`](https://reactrouter.com/en/main/utils/generate-path) function from `"react-router-dom"`. Let's use it instead of our suboptimal implementation. We will also narrow the type of `path` argument from `string` to `Routes` (the constant we defined earlier)
+
+```ts
+import { type Routes } from "./constants";
+import { generatePath } from "react-router-dom";
+
+function buildPath<P extends Routes>(...args: Parameters<typeof generatePath<P>>): string {
+    return generatePath(...args);
+}
+```
+
+Note: `Parameters` is a utility class in TypeScript that allows us to get the typeof parameters of a function in form of a tuple.
+
+We can also do something similar and create a wrapper on the `<Route />` component which only accepts paths from `Routes` constant. However, I'm not a fan of adding JS code only for type-safety, so I'll be skipping that part. In the case of `buildPath` it is justified as I also don't like to use utility functions directly from the library and prefer thin wrappers.
+
+## Conclusion
+
+We now have a type-safe way of building paths to navigate to pages which are known to our application. TypeScript is amazing.
+
+```tsx
+import { useNavigate } from "react-router-dom";
+import { buildPath } from "./utils";
+
+export const SomePage = () => {
+    const { navigate } = useNavigate();
+
+    function redirect() {
+        navigate(buildPath(Routes.USER_DETAILS, { userId: "1" }));
+    }
+
+    return <button onClick={redirect}>Navigate to User Details</button>;
+};
+```
+
+We can always improve it by adding support for queryParamets, support for numeric parameters and so on, but the general concept remain the same. Hope you enjoyed!
