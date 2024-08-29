@@ -30,6 +30,7 @@ const { title = "Sahaj Jain" } = Astro.props;
             href={new URL("rss.xml", Astro.site)}
         />
         <meta name="generator" content={Astro.generator} />
+        <slot name="head" />
     </head>
     <body class="mx-auto max-w-lg mb-64 px-6">
         <slot />
