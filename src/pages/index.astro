@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import { Icon } from "astro-icon/components";
+import StargazersCount from "../components/StargazersCount.tsx";
 
 const links = [
     { label: "Github", href: "https://github.com/jnsahaj" },
@@ -85,10 +86,15 @@ availableBlogEntries.sort((a, b) =>
         <div class="text-zinc-400 text-xs mt-12">Projects</div>
         <section class="grid grid-cols-1 md:grid-cols-2 gap-2 gap-x-10">
             <a href="https://github.com/jnsahaj/lumen" class="flex flex-col gap-2 b py-4 rounded group">
-                <div
-                    class="text-lg flex items-center gap-1 underline group-hover:decoration-current italic underline-offset-2 decoration-zinc-600 transition"
-                >
-                    lumen
+                <div class="flex items-center gap-2">
+                    <div
+                        class="text-lg flex items-center gap-1 underline group-hover:decoration-current italic underline-offset-2 decoration-zinc-600 transition"
+                    >
+                        lumen
+                    </div>
+                    <StargazersCount client:load repo="lumen">
+                        <Icon name="octicon:star-fill-16" class="text-yellow-400" />
+                    </StargazersCount>
                 </div>
                 <p class="text-xs text-zinc-400">
                     An AI-powered CLI tool to list, fuzzy search, and summarize Git commits efficiently. Written in Rust
