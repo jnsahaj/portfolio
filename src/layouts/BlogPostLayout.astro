@@ -22,13 +22,13 @@ const formatDate = (date: string) =>
     <BlogPostJSONLD slot="head" {...post.data} />
     <header class="mt-16">
         <div class="flex justify-between items-center mt-8 text-zinc-400">
-            <a class="flex items-center gap-1 text-sm hover:text-white" href="/">
+            <a class="flex items-center gap-1 text-sm md:text-base lg:text-lg hover:text-white" href="/">
                 <Icon name="octicon:arrow-left-16" />
                 <span>home</span></a
             >
         </div>
-        <h1 class="mt-8 text-3xl font-bold">{post.data.title}</h1>
-        <div class="text-zinc-400 text-xs mt-2">{formatDate(post.data.publishDate)}</div>
+        <h1 class="mt-8 text-3xl md:text-4xl lg:text-5xl font-bold">{post.data.title}</h1>
+        <div class="text-zinc-400 text-xs md:text-sm lg:text-base mt-2">{formatDate(post.data.publishDate)}</div>
     </header>
 
     <slot />
