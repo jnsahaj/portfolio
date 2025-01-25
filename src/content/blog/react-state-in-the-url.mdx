@@ -1,0 +1,105 @@
+---
+title: "URL as State: A Modern React Approach"
+description: "Why it's a good idea to use the URL to store state"
+publishDate: "2025-01-25"
+tags: ["React", "URL", "State", "Advanced React Patterns"]
+draft: true
+---
+
+import { Image } from "astro:assets";
+
+Sometimes, the best place to store state is right in the URL. It’s simple, practical, and often overlooked. Let’s explore why it’s worth considering.
+
+## The Problem
+
+Here's what we want to achieve:
+Let's say we have a modal (dialog) component that allows the user to perform some important actions. We would like the modal to stay open even after the user reloads the page.
+
+If we were to just use `useState` for the modal `open` state, we would lose this information when the page reloads. Let's see how we can solve this problem.
+
+<Image
+    src="https://res.cloudinary.com/dc7wg0knu/image/upload/v1737826203/url-as-state-before-after_ia5irl.png"
+    alt="Before and After"
+    width="800"
+    height="100"
+/>
+
+## Ways to Store State on the Client
+
+Before we look at the solution, let's look at the options we have to store the `open` state for the modal.
+The options can generally be categorized as follows:
+
+#### In the Application
+
+Data that belongs in the working memory of the application. Lasts as long as the application is running.
+
+```ts
+const App = () => {
+    const [open, setOpen] = useState(false);
+    return <Modal open={open} onClose={() => setOpen(false)} />;
+};
+```
+
+#### In the Browser
+
+Data that is stored in the browser. Examples include `localStorage` and `sessionStorage`.
+
+```ts
+const App = () => {
+    const [open, setOpen] = useState(() =>
+        localStorage.getItem("modalOpen") === "true"
+    );
+
+    useEffect(() => {
+        localStorage.setItem("modalOpen", open);
+    }, [open]);
+
+    return <Modal open={open} onClose={() => setOpen(false)} />;
+};
+```
+
+#### In the Server
+
+Data that is stored in the server and accessible via an API. This method would require the client to make a request to the server each time the state of the modal changes.
+
+```ts
+const App = () => {
+    const [open, setOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+        fetch("/api/modal", {
+            method: "POST",
+            body: JSON.stringify({ open: isOpen }),
+        });
+    }, [isOpen]);
+
+    return <Modal open={open} onClose={() => setIsOpen(false)} />;
+};
+```
+
+#### In the URL
+
+This is the encoded data stored in the URL in the form of a `string`. Good examples are Query Parameters (`"/users?userId=desc"`) and Path Parameters (`"/users/1324"`).
+
+## Why choose the URL
+
+As with everything, there are pros and cons to each approach.
+
+#### Pros
+
+-   Shareable between users
+-   Fast
+-   Global
+
+#### Cons
+
+-   Hard to debug
+-   Hard to maintain
+-   Hard to scale
+
+## How to store state in the URL
+
+## When
+
+## How
