@@ -1,8 +1,8 @@
 ---
-title: "URL as State: A Modern React Approach"
+title: "Why useState might not be the Best Place to Store State"
 description: "Why it's a good idea to use the URL to store state"
-publishDate: "2025-01-25"
-tags: ["React", "URL", "State", "Advanced React Patterns"]
+publishDate: "2025-03-11"
+tags: ["React", "URL", "State", "Advanced React Patterns", "useState"]
 draft: true
 ---
 
@@ -26,7 +26,7 @@ If we were to just use `useState` for the modal `open` state, we would lose this
 
 ## Ways to Store State on the Client
 
-Before we look at the solution, let's look at the options we have to store the `open` state for the modal.
+Let's look at the options we have to store state to achieve the desired behavior.
 The options can generally be categorized as follows:
 
 #### In the Application
@@ -88,18 +88,93 @@ As with everything, there are pros and cons to each approach.
 
 #### Pros
 
--   Shareable between users
--   Fast
--   Global
+-   **Shareable between users**: The URL is accessible to anyone who has the link to the page. This makes it easy to share the URL with others.
+-   **Fast**: Reading from the URL is generally faster than reading from localStorage, or requesting data from the server.
+-   **Global**: The state is global and can be accessed by any component.
+-   **Navigation-friendly (Optional)**: The state can leave a trail in the browser history, which can be useful for certain applications.
 
 #### Cons
 
--   Hard to debug
--   Hard to maintain
--   Hard to scale
+-   **Hard to debug and maintain**: When state is stored in the URL, it can be challenging to trace issues back to the source, especially if the URL becomes complex with multiple parameters.
+-   **Hard to scale:** Storing large amounts of state in the URL can lead to lengthy URLs, which [may exceed browser limits](https://stackoverflow.com/questions/812925/what-is-the-maximum-possible-length-of-a-query-string) and degrade user experience.
+-   **Not type-safe out of the box**: URL parameters are typically strings, requiring additional parsing and validation to ensure the correct data types are used, which can introduce bugs if not handled properly.
 
 ## How to store state in the URL
 
-## When
+Storing state in the URL involves using query parameters (?key=value) or hash fragments (#section). This allows state persistence across page reloads and enables users to share specific application states via URLs.
 
-## How
+In React, `useSearchParams` from React Router or the `URLSearchParams` API can be used to manage query parameters dynamically.
+
+Using `useSearchParams` (React Router)
+
+```jsx
+import { useSearchParams } from "react-router-dom";
+
+function Example() {
+    const [searchParams, setSearchParams] = useSearchParams();
+    const updateParam = () => {
+        setSearchParams({ filter: "active" });
+    };
+
+    return (
+        <div>
+            <button onClick={updateParam}>Set Filter</button>
+            <p>Current Filter: {searchParams.get("filter")}</p>
+        </div>
+    );
+}
+```
+
+This ensures state is reflected in the URL (?filter=active) and persists across reloads.
+
+Using `URLSearchParams` (Vanilla JS)
+
+```jsx
+const params = new URLSearchParams(window.location.search);
+params.set("theme", "dark");
+window.history.replaceState({}, "", "?" + params.toString());
+```
+
+This manually updates the URL without causing a page reload.
+
+If your needs are a little more complex, then third-party utilities like [nuqs](https://github.com/47ng/nuqs) are great options for managing URL state in React with type-safety.
+
+```tsx
+import { useQueryState } from "nuqs";
+
+function Example() {
+    const [filter, setFilter] = useQueryState("filter");
+    const updateParam = () => {
+        setFilter("active");
+    };
+
+    return (
+        <div>
+            <button onClick={updateParam}>Set Filter</button>
+            <p>Current Filter: {filter}</p>
+        </div>
+    );
+}
+```
+
+## Conclusion
+
+Choosing where to store state depends on its purpose and how it interacts with the application. Query parameters (?key=value) are ideal in specific scenarios where state persistence, shareability, and browser behavior are important.
+
+#### Use Query Parameters When:
+
+-   State should persist across page reloads (e.g., filters, pagination, modal visibility).
+-   Users should be able to share the state via URL (e.g., search queries, UI settings).
+-   The state affects navigation (e.g., active tabs, sorting options).
+-   You want deep linking support (e.g., restoring UI state when returning to a page).
+
+#### Use useState When:
+
+-   The state is temporary and UI-specific (e.g., form input before submission).
+-   Storing state in the URL is unnecessary for sharing or navigation.
+-   State changes frequently and shouldn't affect navigation history.
+
+#### Use Local Storage (or Session Storage) When:
+
+-   State should persist across sessions but not be visible in the URL (e.g., user preferences, authentication tokens, form input before submission).
+-   Data should not be lost on refresh but is not meant for sharing.
