@@ -106,6 +106,7 @@ export async function GET({ props }: Props) {
         },
     };
 
+    // @ts-expect-error: Astro doesn't support tsx endpoints
     return new ImageResponse(html, {
         width: 1200,
         height: 600,
