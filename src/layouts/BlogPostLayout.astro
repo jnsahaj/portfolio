@@ -3,6 +3,7 @@ import { Icon } from "astro-icon/components";
 import Layout from "./Layout.astro";
 import type { CollectionEntry } from "astro:content";
 import BlogPostJSONLD from "../components/BlogPostJSONLD.astro";
+import Metadata from "../components/Metadata.astro";
 
 interface Props {
     post: CollectionEntry<"blog">;
@@ -20,6 +21,15 @@ const formatDate = (date: string) =>
 
 <Layout title={post.data.title}>
     <BlogPostJSONLD slot="head" {...post.data} />
+    <Metadata
+        slot="head"
+        title={post.data.title}
+        description={post.data.description}
+        image={`${import.meta.env.SITE}/blog/${post.slug}/og.png`}
+        canonicalUrl={`${import.meta.env.SITE}/blog/${post.slug}/`}
+        publishDate={post.data.publishDate}
+        type="article"
+    />
     <header class="mt-16">
         <div class="flex justify-between items-center mt-8 text-zinc-400">
             <a class="flex items-center gap-1 text-sm md:text-base lg:text-lg hover:text-white" href="/">
