@@ -45,12 +45,21 @@ Data that is stored in the browser. Examples include `localStorage` and `session
 
 ```ts
 const App = () => {
-    const [open, setOpen] = useState(() =>
-        localStorage.getItem("modalOpen") === "true"
-    );
+    const [open, setOpen] = useState(() => {
+        try {
+            return localStorage.getItem("modalOpen") === "true";
+        } catch (error) {
+            console.error("Failed to read from localStorage:", error);
+            return false; // Default fallback value
+        }
+    });
 
     useEffect(() => {
-        localStorage.setItem("modalOpen", open);
+        try {
+            localStorage.setItem("modalOpen", open);
+        } catch (error) {
+            console.error("Failed to write to localStorage:", error);
+        }
     }, [open]);
 
     return <Modal open={open} onClose={() => setOpen(false)} />;
@@ -67,13 +76,39 @@ const App = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
-        fetch("/api/modal", {
-            method: "POST",
-            body: JSON.stringify({ open: isOpen }),
-        });
+        const updateModalState = async () => {
+            try {
+                const response = await fetch("/api/modal", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ open: isOpen }),
+                });
+
+                if (!response.ok) {
+                    throw new Error(`API error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                if (data.modalState !== undefined) {
+                    setOpen(data.modalState);
+                }
+
+            } catch (error) {
+                console.error("Failed to update modal state:", error);
+            }
+        };
+
+        updateModalState();
     }, [isOpen]);
 
-    return <Modal open={open} onClose={() => setIsOpen(false)} />;
+    return (
+        <Modal
+            open={open}
+            onClose={() => setIsOpen(false)}
+        />
+    );
 };
 ```
 
