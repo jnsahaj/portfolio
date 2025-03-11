@@ -12,7 +12,7 @@ Sometimes, the best place to store state is right in the URL. It’s simple, pra
 ## The Problem
 
 Here's what we want to achieve:
-Let's say we have a modal (dialog) component that allows the user to perform some important actions. We would like the modal to stay open even after the user reloads the page.
+Let's say we have a modal (dialog) component that allows the user to perform some important actions which are part of the core flow. We would like the modal to stay open even after the user reloads the page.
 
 If we were to just use `useState` for the modal `open` state, we would lose this information when the page reloads. Let's see how we can solve this problem.
 
@@ -195,7 +195,7 @@ function Example() {
 
 Choosing where to store state depends on its purpose and how it interacts with the application. Query parameters (?key=value) are ideal in specific scenarios where state persistence, shareability, and browser behavior are important.
 
-#### Use Query Parameters When:
+#### Use Query Parameters (or Path Parameters) When:
 
 -   State should persist across page reloads (e.g., filters, pagination, modal visibility).
 -   Users should be able to share the state via URL (e.g., search queries, UI settings).
