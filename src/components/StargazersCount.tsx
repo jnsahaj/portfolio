@@ -28,7 +28,7 @@ export default function StargazersCount({ owner = "jnsahaj", repo, children }: P
             title={`starred ${stargazersCount} times on GitHub`}
         >
             {children}
-            <div>{stargazersCount}</div>
+            <div>{stargazersCount?.toLocaleString()}</div>
         </div>
     );
 }

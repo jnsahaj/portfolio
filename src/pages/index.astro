@@ -8,6 +8,7 @@ const links = [
     { label: "Github", href: "https://github.com/jnsahaj" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/sahaj-jain-9099641ab/" },
     { label: "Email", href: "mailto:sahajjain13+business@gmail.com" },
+    { label: "Twitter", href: "https://x.com/iamsahaj_xyz" },
 ];
 
 const blogEntries = await getCollection("blog");
@@ -23,18 +24,40 @@ availableBlogEntries.sort((a, b) =>
 <Layout title="Sahaj Jain">
     <main class="mt-16 md:text-base lg:text-lg text-zinc-300">
         <div class="flex items-center justify-between">
-            <h2 class="text-3xl text-white font-bold">Sahaj Jain</h2>
+            <a href="https://x.com/iamsahaj_xyz">
+                <div class="flex items-center gap-3">
+                    <img
+                        src="https://pbs.twimg.com/profile_images/1954573702768504833/LW-j7iTr_400x400.jpg"
+                        class="w-14 h-14 rounded-full object-cover"
+                    />
+                    <h2 class="text-3xl text-white font-bold">Sahaj Jain</h2>
+                </div>
+            </a>
             <div class="flex items-center gap-3">
                 <a href="https://x.com/iamsahaj_xyz">
                     <Icon name="twitter" class="text-white" />
                 </a>
-                <a href="https://bsky.app/profile/iamsahaj.xyz">
-                    <Icon name="bluesky" class="text-white" />
-                </a>
             </div>
         </div>
         <section class="mt-8">
-            <p>Hey, I’m Sahaj—a software engineer building refined experiences on the web.</p>
+            <p>
+                Hey, I’m Sahaj—a software engineer at Vercel building <a
+                    class="underline underline-offset-1 decoration-zinc-600 hover:decoration-current transition"
+                    href="https://v0.app"
+                    ><svg
+                        fill="currentColor"
+                        viewBox="0 0 147 70"
+                        xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
+                        class="size-7 pb-1 inline"
+                        ><path
+                            d="M56 50.2031V14H70V60.1562C70 65.5928 65.5928 70 60.1562 70C57.5605 70 54.9982 68.9992 53.1562 67.1573L0 14H19.7969L56 50.2031Z"
+                        ></path><path
+                            d="M147 56H133V23.9531L100.953 56H133V70H96.6875C85.8144 70 77 61.1856 77 50.3125V14H91V46.1562L123.156 14H91V0H127.312C138.186 0 147 8.81439 147 19.6875V56Z"
+                        ></path></svg
+                    ></a
+                >
+            </p>
             <br />
         </section>
 
@@ -45,9 +68,10 @@ availableBlogEntries.sort((a, b) =>
             </p>
             <p class="flex mb-1 gap-2 items-center italic">
                 <Icon name="octicon:briefcase-16" />
-                Currently <a
+                Currently<span class="text-sm normal not-italic">▲</span>
+                <a
                     class="underline underline-offset-1 decoration-zinc-600 hover:decoration-current transition"
-                    href="https://vercel.com">@vercel</a
+                    href="https://vercel.com/home">@vercel</a
                 >
             </p>
             <p class="flex mb-1 gap-2 items-center italic">
@@ -58,8 +82,7 @@ availableBlogEntries.sort((a, b) =>
         <section>
             <br />
             <p>
-                I'm a TypeScript nerd and I use neovim <i>(btw)</i>. I love building tools for developers and generally
-                care too much about attention to detail.
+                I'm a TypeScript nerd and I use neovim <i>(btw)</i>. I love building tools for devs
             </p>
         </section>
 
@@ -95,22 +118,6 @@ availableBlogEntries.sort((a, b) =>
 
         <div class="text-zinc-400 text-xs md:text-sm lg:text-base mt-12">Projects</div>
         <section class="grid grid-cols-1 md:grid-cols-2 gap-2 gap-x-10">
-            <a href="https://github.com/jnsahaj/lumen" class="flex flex-col gap-2 b py-4 rounded group">
-                <div class="flex items-center gap-2">
-                    <div
-                        class="text-lg flex items-center gap-1 underline group-hover:decoration-current italic underline-offset-2 decoration-zinc-600 transition"
-                    >
-                        lumen
-                    </div>
-                    <StargazersCount client:load repo="lumen">
-                        <Icon name="octicon:star-fill-16" class="text-yellow-500" />
-                    </StargazersCount>
-                </div>
-                <p class="text-xs md:text-sm lg:text-base text-zinc-400">
-                    An AI-powered CLI tool to generate Git commit messages, summarize changes and more. Supports
-                    multiple AI providers. Written in Rust.
-                </p>
-            </a>
             <a href="https://github.com/jnsahaj/tweakcn" class="flex flex-col gap-2 group py-4 rounded">
                 <div class="flex items-center gap-2">
                     <div
@@ -125,6 +132,22 @@ availableBlogEntries.sort((a, b) =>
                 <p class="text-xs md:text-sm lg:text-base text-zinc-400">
                     A Powerful Theme Editor for shadcn/ui components with Beautiful themes. Integrates with Tailwind
                     CSS.
+                </p>
+            </a>
+            <a href="https://github.com/jnsahaj/lumen" class="flex flex-col gap-2 b py-4 rounded group">
+                <div class="flex items-center gap-2">
+                    <div
+                        class="text-lg flex items-center gap-1 underline group-hover:decoration-current italic underline-offset-2 decoration-zinc-600 transition"
+                    >
+                        lumen
+                    </div>
+                    <StargazersCount client:load repo="lumen">
+                        <Icon name="octicon:star-fill-16" class="text-yellow-500" />
+                    </StargazersCount>
+                </div>
+                <p class="text-xs md:text-sm lg:text-base text-zinc-400">
+                    An AI-powered CLI tool to generate Git commit messages, summarize changes and more. Supports
+                    multiple AI providers. Written in Rust.
                 </p>
             </a>
             <a href="https://github.com/jnsahaj/monkey-rs" class="flex flex-col gap-2 b py-4 rounded group">
