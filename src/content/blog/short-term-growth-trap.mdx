@@ -1,7 +1,7 @@
 ---
 title: "The short-term growth trap"
 description: "Exploring the generatePath function from react-router-dom"
-publishDate: "2025-12-01"
+publishDate: "2025-12-13"
 draft: true
 tags: ["Growth", "Software Development"]
 ---
@@ -21,9 +21,32 @@ Growth isn't linear, or predictable. Let me start by defining it in the context 
 
 ## The trap
 
-You might be familiar with [Greedy Algorithms](https://en.wikipedia.org/wiki/Greedy_algorithm). It's a general approach to solving programming problems that involves making the locally optimal choice at each stage. For some problems though, it turns out that making locally optimal choices repeatedly isn't the most optimal path to the answer, because it's not taking into account the bigger picture, data that you don't/can't have at the current stage.
+You might be familiar with [Greedy Algorithms](https://en.wikipedia.org/wiki/Greedy_algorithm). It's a general approach to solving programming problems that involves making the locally optimal choice at each stage.
 
-How is it related? because Greedy Algorithms don't work in real-life either. That's the short-term growth trap. When you do something for the small, but measurable reward that it would reap, you are making the locally optimal choice.
+Consider this problem:
+
+<p>`Given coins of denominations {(10, 5, 1)}, make change for 16 using the fewest coins.`</p>
+
+You can take a greedy approach to solve it:
+
+`At each step, take the largest coin not exceeding the remaining amount.`
+
+Steps
+
+1. Remaining = 16 → take 10 → remaining 6
+2. Remaining = 6 → take 5 → remaining 1
+3. Remaining = 1 → take 1 → remaining 0
+
+This turns out to be the most optimal solution. However, let's change the example a bit.
+
+`Given coins of denominations {4, 3, 1}, make change for 6 using the fewest coins.`
+
+The greedy approach would yield: `{4, 1, 1}` (3 coins).
+However, the optimal solution is actually `{3, 3}` (2 coins).
+
+For most problems, it turns out that making locally optimal choices repeatedly isn't the most optimal path to the answer, because it's not taking into account the bigger picture, data that you don't/can't have at the current stage.
+
+How is it related? because Greedy Algorithms don't work in real-life either. That's the short-term growth trap. When you do something for the small, measurable reward, you are making the locally optimal choice, without considering the bigger picture.
 
 <Image
     src="https://res.cloudinary.com/dc7wg0knu/image/upload/v1764537055/SCR-20251201-dfax_lbuf4g.jpg"
@@ -35,6 +58,8 @@ How is it related? because Greedy Algorithms don't work in real-life either. Tha
 
 ## How to escape it?
 
-When you try to seek a roadmap, a walkthrough that tells you what to do at each step of the way, you're onboard the greedy train. It's time to step out fo
-
 It's hard to explain (and believe) but some of the most enlightening and fulfilling moments in my brief career have come from things that I had seemingly randomly learned, or projects I had built, with no expectation of reward at the time. Just pure enthusiasm and curiosity.
+
+I found great success with one of my projects [tweakcn](https://tweakcn.com), but what's not known is it was project #34 on my "list of things to build". And the fact this idea even came about was because of another project I was working on at the time.
+
+When you build something with the sole goal of learning, the worst that can happen is you learn something new. The best that can happen is you build something great, and you never know how that will pay off.
