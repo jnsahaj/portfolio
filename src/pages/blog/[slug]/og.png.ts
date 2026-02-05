@@ -64,7 +64,7 @@ export async function GET({ props }: Props) {
                                 props: {
                                     tw: "text-gray-400 text-xl",
                                     style: {},
-                                    children: "Sahaj Jain",
+                                    children: "Test v0",
                                 },
                             },
                             {
